@@ -19,11 +19,9 @@ public class PartRepository extends UnicastRemoteObject implements RMIInterface{
 		this.partRepository = list;
 	}
 	
-	//The client sends a Book object with the isbn information on it (note: it could be a string with the isbn too)
-	//With this method the server searches in the List bookList for any book that has that isbn and returns the whole object
 	@Override
 	public Part findPart(Part part) throws RemoteException {
-		Predicate<Part> predicate = x-> x.getIsbn().equals(part.getIsbn());
+		Predicate<Part> predicate = x-> x.getId().equals(part.getId());
 		return partRepository.stream().filter(predicate).findFirst().get();
 		
 	}
@@ -31,6 +29,33 @@ public class PartRepository extends UnicastRemoteObject implements RMIInterface{
 	@Override
 	public List<Part> allParts() throws RemoteException {
 		return partRepository;
+	}
+	
+	@Override
+	public void addp(String name, String description, int idPart) throws RemoteException {
+		this.partRepository.add(new Part(name, description, 0.0));
+	}	
+	
+	@Override
+	public void clearList(Part part) throws RemoteException{
+		part.clearSubcomponents();
+	}
+	
+	@Override
+	public void clearList() throws RemoteException{
+		this.partRepository.clear();
+	}
+	
+	@Override
+	public String showp(Part part) throws RemoteException{
+		StringBuilder message = new StringBuilder();
+		message.append("Part name: ");
+		message.append(part.getPartName() + "\n");
+		message.append("Part ID: ");
+		message.append(part.getId() + "\n");
+		message.append("Part description: ");
+		message.append(part.getDescription() + "\n");
+		return new String(message);
 	}
 	
 	private static List<Part> initializeList(){
@@ -43,10 +68,7 @@ public class PartRepository extends UnicastRemoteObject implements RMIInterface{
 		return list;
 	}
 	
-	@Override
-	public void addp(String name, String description, int idPart) throws RemoteException {
-		this.partRepository.add(new Part(name, description, 0.0));
-	}
+
 	
 	public static void main(String[] args){
         try {

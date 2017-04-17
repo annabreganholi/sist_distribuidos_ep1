@@ -8,40 +8,39 @@ import java.util.Random;
 public class Part implements Serializable{
 	private static final long serialVersionUID = 1190476516911661470L;
 	private String name;
-	private int idPart;
+	private String idPart;
 	private String description;
 	private HashMap<Part, Integer> subcomponents;
-	private String isbn;
+	//private String isbn;
 	private double cost;
 	
-	public Part(String isbn){
-		this.isbn = isbn;
+	public Part(String idPart){
+		this.idPart = idPart;
 	}
 	
 	public Part(String name, String isbn, double cost){
 		this.name = name;
-		this.isbn = isbn;
 		this.cost = cost;
 		this.idPart = setId();
 		this.subcomponents = new HashMap<Part, Integer>();
 	}
 
-	public int setId(){
+	public String setId(){
 		Random rand = new Random();
 		int randomNum = rand.nextInt((999999 - 100000) + 1) + 100000;
-		return randomNum;
+		return Integer.toString(randomNum);
 	}
 	
 	public String getPartName() {
-		return name;
+		return this.name;
 	}
 	
-	public int getId(){
-		return this.idPart;
+	public String getDescription(){
+		return this.description;
 	}
-
-	public String getIsbn() {
-		return isbn;
+	
+	public String getId(){
+		return this.idPart;
 	}
 
 	public double getCost() {
@@ -49,7 +48,11 @@ public class Part implements Serializable{
 	}
 	
 	public String toString(){
-		return "> " + this.name + " ($" + this.cost + ")";
+		return "> " + this.name + " (ID:" + this.idPart + ")";
+	}
+	
+	public void clearSubcomponents(){
+		this.subcomponents.clear();
 	}
 	
 	public void addPart(Part part, int n){

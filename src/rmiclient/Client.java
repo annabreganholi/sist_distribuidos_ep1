@@ -27,7 +27,7 @@ public class Client {
 		
 		boolean findmore;
 		do{
-			String[] options = {"Adicionar Part", "Mostrar Parts", "Recuperar uma Part", "Exit"};
+			String[] options = {"Adicionar Part", "Mostrar Parts", "Recuperar uma Part", "Excluir Lista de Parts", "Exit"};
 			int choice = JOptionPane.showOptionDialog(null, "Choose an action", "Option dialog", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 			List<Part> list = look_up.allParts();
 			StringBuilder message = new StringBuilder();
@@ -69,17 +69,40 @@ public class Client {
 					JOptionPane.showMessageDialog(null, new String(message));
 					break;
 				case 2:
-					String isbn = JOptionPane.showInputDialog("Type the isbn of the book you want to find.");
+					String idPart = JOptionPane.showInputDialog("Type the isbn of the book you want to find.");
 					try{
-						Part response = look_up.findPart(new Part(isbn));
-						String[] optionst = {"Peça Primitiva?", "N. Componentes", "Listar SubPartes", "Exit"};
-						int choicet = JOptionPane.showOptionDialog(null, "Title: " + response.getPartName() + "\n" + "ID: " + response.getId(), "Option dialog", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, optionst, optionst[0]);
+						Part response = look_up.findPart(new Part(idPart));
 						//JOptionPane.showMessageDialog(null, "Title: " + response.getPartName() + "\n" + "Cost: $" + response.getCost(), response.getIsbn(), JOptionPane.INFORMATION_MESSAGE);
+						boolean continueLoop;
+						do{
+							String[] optionst = {"Peça Primitiva?", "Mostrar Atributos", "Listar SubPartes", "Limpar lista de subpartes", "Exit"};
+							int choicet = JOptionPane.showOptionDialog(null, "Title: " + response.getPartName() + "\n" + "ID: " + response.getId(), "Option dialog", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, optionst, optionst[0]);
+							switch(choicet){
+								case 0:	
+									break;								
+								case 1:
+									JOptionPane.showMessageDialog(null, look_up.showp(response));
+									break;								
+								case 2:
+									break;
+								case 3:
+									look_up.clearList();
+									JOptionPane.showMessageDialog(null, "Lista de subparts limpa");
+									break;	
+								default:
+									System.exit(0);
+									break;
+							}
+							continueLoop = (JOptionPane.showConfirmDialog(null, "Do you want to return?", "Return", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION);
+						}while(continueLoop);
 						
-					
 					}catch(NoSuchElementException ex){
 						JOptionPane.showMessageDialog(null, "Not found");
 					}
+					break;
+				case 3:
+					look_up.clearList();
+					JOptionPane.showMessageDialog(null, "Lista de Parts do servidor deletada");
 					break;
 				default:
 					System.exit(0);
