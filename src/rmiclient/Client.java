@@ -19,7 +19,6 @@ import rmiinterface.RMIInterface;
 
 public class Client {
 	private static RMIInterface look_up;
-	private Part actualPart;
 	
 
 	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException {
@@ -59,9 +58,10 @@ public class Client {
 				    int result = JOptionPane.showConfirmDialog(null, myPanel, 
 				             "Adicionar Parte", JOptionPane.OK_CANCEL_OPTION);
 				    if (result == JOptionPane.OK_OPTION) {
-				    	look_up.addp(nameField.getText(), descriptionField.getText(), 0);
-				       System.out.println("x value: " + nameField.getText());
-				       System.out.println("y value: " + descriptionField.getText());
+				    	Part newPart = look_up.addp(nameField.getText(), descriptionField.getText());
+				    	String[] subparts = subpartsField.getText().split(";");
+				    	System.out.println(subparts[0]);
+				    	look_up.addsubpart(newPart, subparts);
 				    }
 					break;
 				case 1:
@@ -69,9 +69,9 @@ public class Client {
 					JOptionPane.showMessageDialog(null, new String(message));
 					break;
 				case 2:
-					String idPart = JOptionPane.showInputDialog("Type the isbn of the book you want to find.");
+					String idPart = JOptionPane.showInputDialog("Digite o ID da Part que deseja buscar.");
 					try{
-						Part response = look_up.findPart(new Part(idPart));
+						Part response = look_up.getp(new Part(idPart));
 						//JOptionPane.showMessageDialog(null, "Title: " + response.getPartName() + "\n" + "Cost: $" + response.getCost(), response.getIsbn(), JOptionPane.INFORMATION_MESSAGE);
 						boolean continueLoop;
 						do{
@@ -93,7 +93,7 @@ public class Client {
 									System.exit(0);
 									break;
 							}
-							continueLoop = (JOptionPane.showConfirmDialog(null, "Do you want to return?", "Return", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION);
+							continueLoop = (JOptionPane.showConfirmDialog(null, "Deseja sair das funcoes de parts?", "Return", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION);
 						}while(continueLoop);
 						
 					}catch(NoSuchElementException ex){

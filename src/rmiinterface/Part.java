@@ -2,7 +2,6 @@ package rmiinterface;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 public class Part implements Serializable{
@@ -18,11 +17,12 @@ public class Part implements Serializable{
 		this.idPart = idPart;
 	}
 	
-	public Part(String name, String isbn, double cost){
+	public Part(String name, String description){
 		this.name = name;
-		this.cost = cost;
+		this.description = description;
 		this.idPart = setId();
 		this.subcomponents = new HashMap<Part, Integer>();
+		
 	}
 
 	public String setId(){
@@ -55,7 +55,11 @@ public class Part implements Serializable{
 		this.subcomponents.clear();
 	}
 	
-	public void addPart(Part part, int n){
+	public void addSubparts(Part part, int n){
 		this.subcomponents.put(part, n);
+	}
+	
+	public HashMap<Part, Integer> getSubparts(){
+		return this.subcomponents;
 	}
 }
