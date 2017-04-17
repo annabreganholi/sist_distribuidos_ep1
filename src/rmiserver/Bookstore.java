@@ -1,4 +1,4 @@
-package com.mkyong.rmiserver;
+package rmiserver;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import com.mkyong.rmiinterface.Part;
-import com.mkyong.rmiinterface.RMIInterface;
+import rmiinterface.Part;
+import rmiinterface.RMIInterface;
 
 public class Bookstore extends UnicastRemoteObject implements RMIInterface{
 	private static final long serialVersionUID = 1L;

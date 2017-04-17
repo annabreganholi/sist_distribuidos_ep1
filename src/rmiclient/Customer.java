@@ -1,4 +1,4 @@
-package com.mkyong.rmiclient;
+package rmiclient;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -9,8 +9,8 @@ import java.util.NoSuchElementException;
 
 import javax.swing.JOptionPane;
 
-import com.mkyong.rmiinterface.Part;
-import com.mkyong.rmiinterface.RMIInterface;
+import rmiinterface.Part;
+import rmiinterface.RMIInterface;
 
 public class Customer {
 	private static RMIInterface look_up;

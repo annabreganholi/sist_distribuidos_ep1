@@ -1,4 +1,4 @@
-package com.mkyong.rmiinterface;
+package rmiinterface;
 
 import java.io.Serializable;
 import java.util.HashMap;

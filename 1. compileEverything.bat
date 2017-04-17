@@ -1,2 +1,2 @@
 set PATH=%PATH%;C:\Program Files\Java\jdk1.8.0_121\bin
-javac src/com/mkyong/rmiinterface/RMIInterface.java src/com/mkyong/rmiinterface/Book.java src/com/mkyong/rmiserver/Bookstore.java src/com/mkyong/rmiclient/Customer.java
+javac src/rmiinterface/RMIInterface.java src/rmiinterface/Part.java src/rmiserver/Bookstore.java src/rmiclient/Customer.java
