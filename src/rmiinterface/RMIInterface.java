@@ -11,6 +11,7 @@ public interface RMIInterface extends Remote{
 	public void clearList(Part part) throws RemoteException;//Clear part list
 	public void clearList() throws RemoteException;//Clear part list
 	public void addsubpart(Part part, String[] subparts) throws RemoteException;//adiciona n peças da subpart corrente na subpart corrente
-	public Part addp(String name, String description) throws RemoteException; //Adiciona peça ao repositorio corrente
-	
+	public Part addp(String name, String description, String[] subparts) throws RemoteException; //Adiciona peça ao repositorio corrente
+	public boolean checkPrimitive(Part part)throws RemoteException; 
+	public String listSubparts(String partId) throws RemoteException; 
 }

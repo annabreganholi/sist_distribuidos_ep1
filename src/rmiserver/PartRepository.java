@@ -4,8 +4,6 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -34,9 +32,14 @@ public class PartRepository extends UnicastRemoteObject implements RMIInterface{
 	}
 	
 	@Override
-	public Part addp(String name, String description) throws RemoteException {
+	public Part addp(String name, String description, String[] subparts) throws RemoteException {
 		Part newPart = new Part(name, description);
 		this.partRepository.add(newPart);
+		String[] splitted;
+		for (int i=0; i<subparts.length; i++){
+			splitted = subparts[i].split(",");
+			newPart.addSubparts(getp(new Part(splitted[0])), Integer.parseInt(splitted[1]));
+		}
 		return newPart;
 	}	
 	
@@ -53,7 +56,6 @@ public class PartRepository extends UnicastRemoteObject implements RMIInterface{
 	@Override
 	public String showp(Part part) throws RemoteException{
 		StringBuilder message = new StringBuilder();
-		HashMap<Part, Integer> subparts = part.getSubparts();
 		message.append("Part name: ");
 		message.append(part.getPartName() + "\n");
 		message.append("Part ID: ");
@@ -61,7 +63,6 @@ public class PartRepository extends UnicastRemoteObject implements RMIInterface{
 		message.append("Part description: ");
 		message.append(part.getDescription() + "\n");
 		
-		System.out.println("dasdasd");
 		return new String(message);
 	}
 	
@@ -72,8 +73,23 @@ public class PartRepository extends UnicastRemoteObject implements RMIInterface{
 			splitted = subparts[i].split(",");
 			part.addSubparts(getp(new Part(splitted[0])), Integer.parseInt(splitted[1]));
 		}
-		part.getSubparts().forEach((x,y) -> System.out.println(x.getPartName() + " "+ y + "\n"));
 		
+	}
+	
+	@Override
+	public boolean checkPrimitive(Part part)throws RemoteException{
+		if (part.getSubparts().isEmpty())
+			return true;
+		else return false;
+	}
+	
+	@Override
+	public String listSubparts(String partId) throws RemoteException{
+		StringBuilder message = new StringBuilder();
+		
+		getp(new Part(partId)).getSubparts().forEach((x,y) -> message.append("Part ID: " + x.getId() + "; Nome: "+x.getPartName() + "; Quantidade: "+ y + "\n"));
+		
+		return new String(message);
 	}
 	
 	private static List<Part> initializeList(){

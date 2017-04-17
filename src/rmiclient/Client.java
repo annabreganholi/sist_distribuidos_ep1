@@ -7,7 +7,6 @@ import java.rmi.RemoteException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -48,20 +47,17 @@ public class Client {
 				    myPanel.add(partList);
 				    myPanel.add(new JLabel("Nome:"));
 				    myPanel.add(nameField);
-				    myPanel.add(Box.createHorizontalStrut(15)); // a spacer
 				    myPanel.add(new JLabel("Descricao:"));
-				    myPanel.add(descriptionField);
-				    myPanel.add(Box.createHorizontalStrut(15)); // a spacer   
-				    myPanel.add(new JLabel("Subparts (Formato: 'id,quantidade;id,quantidade' Entrar com 'null' caso não possua subpartes:"));
+				    myPanel.add(descriptionField); 
+				    myPanel.add(new JLabel("Subparts (Formato: 'id,quantidade;id,quantidade' Deixar em branco caso a part seja primitiva:"));
 				    myPanel.add(subpartsField);
 
 				    int result = JOptionPane.showConfirmDialog(null, myPanel, 
 				             "Adicionar Parte", JOptionPane.OK_CANCEL_OPTION);
 				    if (result == JOptionPane.OK_OPTION) {
-				    	Part newPart = look_up.addp(nameField.getText(), descriptionField.getText());
 				    	String[] subparts = subpartsField.getText().split(";");
-				    	System.out.println(subparts[0]);
-				    	look_up.addsubpart(newPart, subparts);
+				    	look_up.addp(nameField.getText(), descriptionField.getText(), subparts);
+				    	
 				    }
 					break;
 				case 1:
@@ -72,18 +68,22 @@ public class Client {
 					String idPart = JOptionPane.showInputDialog("Digite o ID da Part que deseja buscar.");
 					try{
 						Part response = look_up.getp(new Part(idPart));
-						//JOptionPane.showMessageDialog(null, "Title: " + response.getPartName() + "\n" + "Cost: $" + response.getCost(), response.getIsbn(), JOptionPane.INFORMATION_MESSAGE);
 						boolean continueLoop;
 						do{
 							String[] optionst = {"Peça Primitiva?", "Mostrar Atributos", "Listar SubPartes", "Limpar lista de subpartes", "Exit"};
-							int choicet = JOptionPane.showOptionDialog(null, "Title: " + response.getPartName() + "\n" + "ID: " + response.getId(), "Option dialog", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, optionst, optionst[0]);
+							int choicet = JOptionPane.showOptionDialog(null, "Nome: " + response.getPartName() + "\n" + "ID: " + response.getId(), "Option dialog", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, optionst, optionst[0]);
 							switch(choicet){
 								case 0:	
+									if (look_up.checkPrimitive(response))
+										JOptionPane.showMessageDialog(null, "Part eh primitiva");
+									else
+										JOptionPane.showMessageDialog(null, "Part eh composta");
 									break;								
 								case 1:
-									JOptionPane.showMessageDialog(null, look_up.showp(response));
+									JOptionPane.showMessageDialog(null, look_up.showp(look_up.getp(new Part(idPart))));
 									break;								
 								case 2:
+									JOptionPane.showMessageDialog(null, look_up.listSubparts(idPart));
 									break;
 								case 3:
 									look_up.clearList();
@@ -97,7 +97,7 @@ public class Client {
 						}while(continueLoop);
 						
 					}catch(NoSuchElementException ex){
-						JOptionPane.showMessageDialog(null, "Not found");
+						JOptionPane.showMessageDialog(null, "Id nao existente");
 					}
 					break;
 				case 3:
@@ -108,7 +108,7 @@ public class Client {
 					System.exit(0);
 					break;
 			}
-			findmore = (JOptionPane.showConfirmDialog(null, "Do you want to exit?", "Exit", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION);
+			findmore = (JOptionPane.showConfirmDialog(null, "Deseja fechar a aplicacao?", "Exit", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION);
 		}while(findmore);
 	}
 }
