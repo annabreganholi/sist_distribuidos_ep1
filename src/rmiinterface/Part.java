@@ -36,6 +36,9 @@ public class Part implements Serializable{
 		return name;
 	}
 	
+	public int getId(){
+		return this.idPart;
+	}
 
 	public String getIsbn() {
 		return isbn;

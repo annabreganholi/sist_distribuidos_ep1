@@ -10,13 +10,13 @@ import java.util.function.Predicate;
 import rmiinterface.Part;
 import rmiinterface.RMIInterface;
 
-public class Bookstore extends UnicastRemoteObject implements RMIInterface{
+public class PartRepository extends UnicastRemoteObject implements RMIInterface{
 	private static final long serialVersionUID = 1L;
-	private List<Part> bookList;
+	private List<Part> partRepository;
 
-	protected Bookstore(List<Part> list) throws RemoteException {
+	protected PartRepository(List<Part> list) throws RemoteException {
 		super();
-		this.bookList = list;
+		this.partRepository = list;
 	}
 	
 	//The client sends a Book object with the isbn information on it (note: it could be a string with the isbn too)
@@ -24,13 +24,13 @@ public class Bookstore extends UnicastRemoteObject implements RMIInterface{
 	@Override
 	public Part findPart(Part part) throws RemoteException {
 		Predicate<Part> predicate = x-> x.getIsbn().equals(part.getIsbn());
-		return bookList.stream().filter(predicate).findFirst().get();
+		return partRepository.stream().filter(predicate).findFirst().get();
 		
 	}
 	
 	@Override
-	public List<Part> allBooks() throws RemoteException {
-		return bookList;
+	public List<Part> allParts() throws RemoteException {
+		return partRepository;
 	}
 	
 	private static List<Part> initializeList(){
@@ -43,9 +43,14 @@ public class Bookstore extends UnicastRemoteObject implements RMIInterface{
 		return list;
 	}
 	
+	@Override
+	public void addp(String name, String description, int idPart) throws RemoteException {
+		this.partRepository.add(new Part(name, description, 0.0));
+	}
+	
 	public static void main(String[] args){
         try {
-            Naming.rebind("//localhost/MyBookstore", new Bookstore(initializeList()));
+            Naming.rebind("//localhost/PartRepository", new PartRepository(initializeList()));
             System.err.println("Server ready");
         } catch (Exception e) {
             System.err.println("Server exception: " + e.getMessage());
