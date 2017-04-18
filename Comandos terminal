@@ -1,0 +1,9 @@
+Comando para Compilar:
+	javac src/rmiinterface/RMIInterface.java src/rmiinterface/Part.java src/rmiserver/PartRepository.java src/rmiclient/Client.java
+Comando para iniciar Server:
+	cd src
+	start rmiregistry
+	java rmiserver.PartRepository ServerX
+Comando para iniciar Client:
+	cd src
+	java rmiclient.Client
