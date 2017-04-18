@@ -7,3 +7,17 @@ Comando para iniciar Server:
 Comando para iniciar Client:
 	cd src
 	java rmiclient.Client
+
+Ao inicializar o programa, será solicitado que insira o servidor inicial. Para que a primeira conexão seja criada
+Ao selecionar o servidor que deseja, uma nova janela será aberta, nela estao todas as funçoes que podem ser feitas dentro do servidor:
+	Trocar Server:
+		Será aberta uma nova janela, con todos os nomes de server que estao ativos, só será necessário entrar com o nome entre as ultimas '/'
+		Exemplo: na lista está //localhost:1099/ServerX/
+		Voce inserirá ServerX
+		Com isso será migrado para outro server, com outras peças, o que é feito em um server não influencia em outro
+
+	Adicionar peça
+
+	...
+
+	Por aí vai, é bom colocar prints, e exemplinhos, se quebrar em algum botão, me avisa :) Se for algo essencial, eu arrumo, se não, meeeh hahaa
